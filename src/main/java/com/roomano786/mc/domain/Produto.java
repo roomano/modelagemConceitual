@@ -1,5 +1,7 @@
 package com.roomano786.mc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ public class Produto implements Serializable {
 	private Double preco;
 
 	//modelagem relacional
+	@JsonBackReference // protecao contra serializacao do JSON lado B
 	@ManyToMany
 	@JoinTable(
 			name = "PRODUTO_CATEGORIA",
