@@ -1,13 +1,8 @@
 package com.roomano786.mc;
 
-import com.roomano786.mc.domain.Categoria;
-import com.roomano786.mc.domain.Cidade;
-import com.roomano786.mc.domain.Produto;
-import com.roomano786.mc.domain.Provincia;
-import com.roomano786.mc.repositories.CategoriaRepository;
-import com.roomano786.mc.repositories.CidadeRepository;
-import com.roomano786.mc.repositories.ProdutoRepository;
-import com.roomano786.mc.repositories.ProvinciaRepository;
+import com.roomano786.mc.domain.*;
+import com.roomano786.mc.domain.enums.TipoCliente;
+import com.roomano786.mc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,6 +24,12 @@ public class ModelagemconceitualApplication implements CommandLineRunner {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
+
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ModelagemconceitualApplication.class, args);
@@ -72,6 +73,22 @@ public class ModelagemconceitualApplication implements CommandLineRunner {
 		provinciaRepository.saveAll(Arrays.asList(provincia1, provincia2));
 		cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3, cidade4));
 
+		Cliente cliente1 = new Cliente(null, "Romano Ivan Pedro", "romanoivanchicra@gmail.com", "78930790", TipoCliente.PESSOAFISICA);
+		cliente1.getTelefones().addAll(Arrays.asList("839809878", "847198940"));
+
+		Cliente cliente2 = new Cliente(null, "Joaquim Pereira", "joaquim@outloo.com", "890284798", TipoCliente.PESSOAFISICA);
+		cliente2.getTelefones().addAll(Arrays.asList("872309349", "862983239"));
+
+		Cliente cliente3 = new Cliente(null, "JVM Inc.", "jvm.contato@empresa.com", "78907238", TipoCliente.PESSOAJURIDICA);
+		cliente3.getTelefones().addAll(Arrays.asList("21887086", "84234", "8208797", "868070"));
+
+		Endereco endereco1 = new Endereco(null, "787", "12","3 de Fevereiro", "1120", cliente3, cidade1);
+		Endereco endereco2 = new Endereco(null, "2345", "45", "Polana", "1110", cliente3, cidade4);
+
+		cliente3.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+
+		clienteRepository.saveAll(Arrays.asList(cliente1, cliente2, cliente3));
+		enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
 
 	}
 }
