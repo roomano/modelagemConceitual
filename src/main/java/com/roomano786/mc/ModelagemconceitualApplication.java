@@ -1,13 +1,16 @@
 package com.roomano786.mc;
 
 import com.roomano786.mc.domain.*;
+import com.roomano786.mc.domain.enums.EstadoPagamento;
 import com.roomano786.mc.domain.enums.TipoCliente;
 import com.roomano786.mc.repositories.*;
+import org.hibernate.collection.internal.PersistentIdentifierBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -30,6 +33,12 @@ public class ModelagemconceitualApplication implements CommandLineRunner {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+
+	@Autowired
+	private PedidoRepository pedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ModelagemconceitualApplication.class, args);
@@ -76,7 +85,8 @@ public class ModelagemconceitualApplication implements CommandLineRunner {
 		Cliente cliente1 = new Cliente(null, "Romano Ivan Pedro", "romanoivanchicra@gmail.com", "78930790", TipoCliente.PESSOAFISICA);
 		cliente1.getTelefones().addAll(Arrays.asList("839809878", "847198940"));
 
-		Cliente cliente2 = new Cliente(null, "Joaquim Pereira", "joaquim@outloo.com", "890284798", TipoCliente.PESSOAFISICA);
+		Cliente cliente2 = new Cliente(null, "Joaquim Pereira", "joaquim@outlook.com", "890284798",
+				TipoCliente.PESSOAFISICA);
 		cliente2.getTelefones().addAll(Arrays.asList("872309349", "862983239"));
 
 		Cliente cliente3 = new Cliente(null, "JVM Inc.", "jvm.contato@empresa.com", "78907238", TipoCliente.PESSOAJURIDICA);
@@ -89,6 +99,24 @@ public class ModelagemconceitualApplication implements CommandLineRunner {
 
 		clienteRepository.saveAll(Arrays.asList(cliente1, cliente2, cliente3));
 		enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+		Pedido pedido1 = new Pedido(null,sdf.parse("05/05/2021 14:25"), cliente3, endereco1 );
+		Pedido pedido2 = new Pedido(null, sdf.parse("28/05/2021 10:23"), cliente3, endereco2);
+
+		Pagamento pagamento1 = new PagamentoCartao(null, EstadoPagamento.PAGO, pedido1, 6);
+		pedido1.setPagamento(pagamento1);
+		Pagamento pagamento2 = new PagamentoBoleto(null, EstadoPagamento.PENDENTE, pedido2, sdf.parse("12/04/2021 16:25")
+				, null);
+		pedido2.setPagamento(pagamento2);
+
+		cliente3.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
+
+		pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
+		pagamentoRepository.saveAll(Arrays.asList(pagamento1, pagamento2));
+
+
 
 	}
 }
