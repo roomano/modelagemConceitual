@@ -40,6 +40,9 @@ public class ModelagemconceitualApplication implements CommandLineRunner {
 	@Autowired
 	private PedidoRepository pedidoRepository;
 
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(ModelagemconceitualApplication.class, args);
 	}
@@ -115,6 +118,19 @@ public class ModelagemconceitualApplication implements CommandLineRunner {
 
 		pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
 		pagamentoRepository.saveAll(Arrays.asList(pagamento1, pagamento2));
+
+		ItemPedido itemPedido1 = new ItemPedido(pedido1, produto1, 0.00, 1, produto1.getPreco());
+		ItemPedido itemPedido2 = new ItemPedido(pedido2, produto2, 0.00, 1, produto2.getPreco());
+		pedido1.getItens().addAll(Arrays.asList(itemPedido1));
+		pedido2.getItens().addAll(Arrays.asList(itemPedido2));
+
+		produto1.getItens().addAll(Arrays.asList(itemPedido1));
+		produto2.getItens().addAll(Arrays.asList(itemPedido2));
+
+		itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2));
+
+
+
 
 
 
