@@ -1,7 +1,7 @@
 package com.roomano786.mc.resources;
 
-import com.roomano786.mc.domain.Categoria;
-import com.roomano786.mc.services.CategoriaService;
+import com.roomano786.mc.domain.Pedido;
+import com.roomano786.mc.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,20 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
-@RequestMapping(value="/categorias")
-public class CategoriaResource {
+@RequestMapping(value = "/pedidos")
+public class PedidoResource {
 
 	@Autowired
-	private CategoriaService categoriaService;
+	private PedidoService pedidoService;
 
-	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
-
-		Categoria obj = categoriaService.buscar(id);
+		Pedido obj = pedidoService.buscar(id);
 		return ResponseEntity.ok().body(obj);
 	}
 }

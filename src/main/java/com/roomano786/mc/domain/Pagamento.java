@@ -1,5 +1,6 @@
 package com.roomano786.mc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.roomano786.mc.domain.enums.EstadoPagamento;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public abstract class Pagamento implements Serializable {
 
 	private Integer estadoPagamento;
 
+	@JsonBackReference
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
 	@MapsId
